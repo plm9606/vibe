@@ -1,0 +1,14 @@
+{
+  "name": "vibe",
+  "private": true,
+  "workspaces": [
+    "projects/*"
+  ],
+  "scripts": {
+    "stock-calc": "yarn workspace stock-exchange-calc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "packageManager": "yarn@1.22.22"
+}

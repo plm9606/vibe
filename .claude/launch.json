@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "stock-exchange-web",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev"],
+      "cwd": "projects/stock-exchange-web",
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

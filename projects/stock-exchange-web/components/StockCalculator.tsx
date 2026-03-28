@@ -73,7 +73,13 @@ export default function StockCalculator() {
       stockMonths: String(stockMonths),
     });
     const url = `${window.location.origin}?${shareParams.toString()}`;
-    await navigator.clipboard.writeText(url);
+
+    const fxStr = Math.round(exchange.current).toLocaleString('ko-KR');
+    const shareText = result.isAlreadyGood
+      ? `현재 환율: ${fxStr}원\n${stock.symbol} 지금 사도 유리해요! ✅\n\n${url}`
+      : `현재 환율: ${fxStr}원\n${stock.symbol} 얼마에 사야 유리할까?\n\n${url}`;
+
+    await navigator.clipboard.writeText(shareText);
     router.replace(`?${params.toString()}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`, { scroll: false });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

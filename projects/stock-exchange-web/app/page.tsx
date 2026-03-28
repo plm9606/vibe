@@ -19,13 +19,18 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   if (!symbol || !price || !breakeven) {
     return {
       title: '미장 환율 계산기',
-      description: '환율 고려 시 미국 주식을 얼마나 더 기다려야 이득인지 계산합니다',
+      description: '지금 사면 손해일까? 환율 고려해서 계산해보기',
       openGraph: {
-        title: '미장 환율 계산기 📈',
-        description: '환율 고려 시 미국 주식을 얼마나 더 기다려야 이득인지 계산합니다',
-        images: ['/api/og'],
+        title: '미장 환율 계산기',
+        description: '지금 사면 손해일까? 환율 고려해서 계산해보기',
+        images: [{ url: '/og_default.png', width: 1200, height: 630 }],
       },
-      twitter: { card: 'summary_large_image' },
+      twitter: {
+        card: 'summary_large_image',
+        title: '미장 환율 계산기',
+        description: '지금 사면 손해일까? 환율 고려해서 계산해보기',
+        images: ['/og_default.png'],
+      },
     };
   }
 
@@ -37,20 +42,20 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     ? `현재가 $${price} · 환율 ${fx}원 기준, 3개월 평균 대비 이미 저렴합니다.`
     : `현재가 $${price}에서 ${drop}% 더 하락($${breakeven})해야 환율 손해를 극복합니다. 현재 환율 ${fx}원 기준.`;
 
-  const ogImageParams = new URLSearchParams({
-    symbol, name: name ?? symbol, price, breakeven,
-    good: String(good), drop: drop ?? '0', fx: fx ?? '0',
-  });
-
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: [`/api/og?${ogImageParams.toString()}`],
+      images: [{ url: '/og_default.png', width: 1200, height: 630 }],
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og_default.png'],
+    },
   };
 }
 
