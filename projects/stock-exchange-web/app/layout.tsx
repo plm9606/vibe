@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mijang.vercel.app'),
   title: "미장 환율 계산기",
   description: "환율 고려 시 미국 주식을 얼마나 더 기다려야 이득인지 계산합니다",
 };
