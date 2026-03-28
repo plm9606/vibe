@@ -58,29 +58,24 @@ export default function StockCalculator() {
 
   async function handleShare() {
     if (!stock || !result || !exchange) return;
-    const params = new URLSearchParams({
-      symbol: stock.symbol,
-      name: stock.name,
-      price: stock.current.toFixed(2),
-      breakeven: result.breakEvenPriceUsd.toFixed(2),
-      good: String(result.isAlreadyGood),
-      drop: result.requiredDropPercent.toFixed(1),
-      fx: Math.round(exchange.current).toString(),
-    });
-    const shareParams = new URLSearchParams({
-      symbol: stock.symbol,
-      fxMonths: String(fxMonths),
-      stockMonths: String(stockMonths),
-    });
-    const url = `${window.location.origin}?${shareParams.toString()}`;
-
+    const url = window.location.href;
     const fxStr = Math.round(exchange.current).toLocaleString('ko-KR');
     const shareText = result.isAlreadyGood
       ? `현재 환율: ${fxStr}원\n${stock.symbol} 지금 사도 유리해요! ✅\n\n${url}`
       : `현재 환율: ${fxStr}원\n${stock.symbol} 얼마에 사야 유리할까?\n\n${url}`;
 
-    await navigator.clipboard.writeText(shareText);
-    router.replace(`?${params.toString()}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`, { scroll: false });
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = shareText;
+      el.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    router.replace(`?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`, { scroll: false });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
@@ -175,7 +170,7 @@ export default function StockCalculator() {
         <div className="text-center mb-8">
           <div className="text-4xl mb-2">📈</div>
           <h1 className="text-2xl font-bold tracking-tight">실시간 미장 환율 계산기</h1>
-          <p className="text-gray-400 text-sm mt-1">환율 고려 시 얼마나 더 빠져야 이득인지 계산</p>
+          <p className="text-gray-400 text-sm mt-1">지금 환율에 얼마나 더 빠져야 이득일까?</p>
         </div>
 
         {/* 입력 */}
