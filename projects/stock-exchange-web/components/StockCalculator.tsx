@@ -58,7 +58,7 @@ export default function StockCalculator() {
 
   async function handleShare() {
     if (!stock || !result || !exchange) return;
-    const url = window.location.href;
+    const url = `${window.location.origin}?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`;
     const fxStr = Math.round(exchange.current).toLocaleString('ko-KR');
     const shareText = result.isAlreadyGood
       ? `현재 환율: ${fxStr}원\n${stock.symbol} 지금 사도 유리해요! ✅\n\n${url}`
