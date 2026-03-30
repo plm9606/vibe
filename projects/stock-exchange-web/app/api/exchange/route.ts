@@ -22,20 +22,24 @@ export async function GET(request: Request) {
     const startDate = format(subMonths(today, months), 'yyyy-MM-dd');
     const endDate = format(today, 'yyyy-MM-dd');
 
-    // 히스토리: Frankfurter (ECB 기반)
-    const historyRes = await axios.get(`https://api.frankfurter.app/${startDate}..${endDate}`, {
+    const res = await axios.get(`https://api.frankfurter.app/${startDate}..${endDate}`, {
       params: { from: 'EUR', to: 'USD,KRW' },
     });
-    const rates = historyRes.data.rates as Record<string, Record<string, number>>;
+
+    const rates = res.data.rates as Record<string, Record<string, number>>;
     const history = extractUsdToKrw(rates);
 
     const values = Object.values(history);
     if (values.length === 0) throw new Error('No exchange rate data');
+
     const avg = values.reduce((s, v) => s + v, 0) / values.length;
 
-    // 현재 환율: ExchangeRate-API (키 불필요, 미국 영업일 기준 실시간)
-    const currentRes = await axios.get('https://open.er-api.com/v6/latest/USD');
-    const current: number = currentRes.data.rates['KRW'];
+    // 최신 환율은 /latest 로 별도 조회 (당일 데이터 보장)
+    const latestRes = await axios.get('https://api.frankfurter.app/latest', {
+      params: { from: 'EUR', to: 'USD,KRW' },
+    });
+    const latestRates = latestRes.data.rates as Record<string, number>;
+    const current = latestRates['KRW'] / latestRates['USD'];
 
     return NextResponse.json({ current, avg, history }, {
       headers: { 'Cache-Control': 'no-store' },
