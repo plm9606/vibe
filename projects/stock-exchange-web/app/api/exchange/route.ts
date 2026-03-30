@@ -33,10 +33,17 @@ export async function GET(request: Request) {
     if (values.length === 0) throw new Error('No exchange rate data');
 
     const avg = values.reduce((s, v) => s + v, 0) / values.length;
-    const sortedDates = Object.keys(history).sort();
-    const current = history[sortedDates[sortedDates.length - 1]];
 
-    return NextResponse.json({ current, avg, history });
+    // 최신 환율은 /latest 로 별도 조회 (당일 데이터 보장)
+    const latestRes = await axios.get('https://api.frankfurter.app/latest', {
+      params: { from: 'EUR', to: 'USD,KRW' },
+    });
+    const latestRates = latestRes.data.rates as Record<string, number>;
+    const current = latestRates['KRW'] / latestRates['USD'];
+
+    return NextResponse.json({ current, avg, history }, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error';
     return NextResponse.json({ error: msg }, { status: 500 });

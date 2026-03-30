@@ -38,7 +38,9 @@ export async function GET(request: Request) {
     const current: number = meta.regularMarketPrice ?? history[history.length - 1].close;
     const name: string = meta.longName ?? meta.shortName ?? symbol;
 
-    return NextResponse.json({ symbol, name, current, avg, history });
+    return NextResponse.json({ symbol, name, current, avg, history }, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error';
     return NextResponse.json({ error: msg }, { status: 500 });
