@@ -88,6 +88,8 @@ export default function PrivacyPage() {
             <Link href="/about" className="text-gray-400 hover:text-white transition-colors">서비스 소개</Link>
             <span className="text-gray-700">·</span>
             <Link href="/guide" className="text-gray-400 hover:text-white transition-colors">투자 가이드</Link>
+            <span className="text-gray-700">·</span>
+            <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">자주 묻는 질문</Link>
           </div>
         </div>
 

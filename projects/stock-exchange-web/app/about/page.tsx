@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
   title: '서비스 소개 | 미장 환율 계산기',
@@ -98,12 +99,20 @@ export default function AboutPage() {
 
         </div>
 
+        {/* 광고 */}
+        <div className="mt-8">
+          <AdBanner adSlot="AUTO" adFormat="auto" />
+        </div>
+
         <div className="mt-12 flex gap-3 flex-wrap">
           <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
             계산기 사용하기
           </Link>
           <Link href="/guide" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
             투자 가이드 읽기
+          </Link>
+          <Link href="/faq" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
+            자주 묻는 질문
           </Link>
           <Link href="/privacy" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
             개인정보처리방침

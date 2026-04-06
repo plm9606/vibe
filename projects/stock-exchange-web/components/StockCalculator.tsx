@@ -1,6 +1,7 @@
 'use client';
 
 import { AnalysisResult, analyze } from '@/lib/calculator';
+import AdBanner from '@/components/AdBanner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -568,17 +569,49 @@ export default function StockCalculator() {
           </div>
         )}
 
+        {/* 소개 콘텐츠 */}
+        <section className="mt-10 bg-gray-900 rounded-2xl p-5 space-y-4">
+          <h2 className="text-lg font-bold">미장 환율 계산기란?</h2>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            한국에서 미국 주식에 투자할 때, 주가뿐만 아니라 환율도 수익에 큰 영향을 미칩니다.
+            환율이 높은 시기에 매수하면 같은 주식이라도 원화 기준으로 더 비싸게 사는 셈이 됩니다.
+          </p>
+          <p className="text-gray-300 text-sm leading-relaxed">
+            미장 환율 계산기는 현재 환율과 주가를 과거 평균과 비교하여 <strong className="text-white">지금 매수하는 것이 유리한지, 얼마나 더 하락해야 이득인지</strong>를 한눈에 보여줍니다.
+            ECB(유럽중앙은행) 환율 데이터와 Yahoo Finance 주가 데이터를 활용하여 실시간으로 계산합니다.
+          </p>
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            <div className="bg-gray-800 rounded-xl p-3 text-center">
+              <div className="text-blue-400 text-xl mb-1">&#x1f4b1;</div>
+              <div className="text-xs text-gray-400">실시간 환율</div>
+              <div className="text-sm font-semibold mt-0.5">ECB 공식 데이터</div>
+            </div>
+            <div className="bg-gray-800 rounded-xl p-3 text-center">
+              <div className="text-emerald-400 text-xl mb-1">&#x1f4ca;</div>
+              <div className="text-xs text-gray-400">주가 조회</div>
+              <div className="text-sm font-semibold mt-0.5">Yahoo Finance</div>
+            </div>
+          </div>
+        </section>
+
+        {/* 광고 */}
+        <div className="mt-6">
+          <AdBanner adSlot="AUTO" adFormat="horizontal" />
+        </div>
+
         <p className="text-center text-gray-600 text-xs mt-8 leading-relaxed">
           환율: Frankfurter (ECB) · 주가: Yahoo Finance<br />
           투자 판단의 참고용이며 실제 투자 조언이 아닙니다
         </p>
-        <div className="flex justify-center gap-4 mt-4 text-xs text-gray-700">
+        <nav className="flex justify-center gap-4 mt-4 text-xs text-gray-700">
           <a href="/guide" className="hover:text-gray-400 transition-colors">투자 가이드</a>
+          <span>·</span>
+          <a href="/faq" className="hover:text-gray-400 transition-colors">자주 묻는 질문</a>
           <span>·</span>
           <a href="/about" className="hover:text-gray-400 transition-colors">서비스 소개</a>
           <span>·</span>
           <a href="/privacy" className="hover:text-gray-400 transition-colors">개인정보처리방침</a>
-        </div>
+        </nav>
       </div>
     </main>
   );
