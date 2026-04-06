@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
   title: '환율이 미국 주식 투자에 미치는 영향 | 미장 환율 계산기',
@@ -70,6 +71,11 @@ export default function GuidePage() {
             <p className="mt-3">미국 주식 투자 시에는 환율 외에도 기업 실적, 글로벌 경기 흐름, 섹터 트렌드 등 다양한 요소를 함께 고려하시기 바랍니다.</p>
           </section>
 
+        </div>
+
+        {/* 광고 */}
+        <div className="mt-8">
+          <AdBanner adSlot="AUTO" adFormat="auto" />
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-800 text-center">

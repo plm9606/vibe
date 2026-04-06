@@ -26,7 +26,7 @@ export default function AdBanner({ adSlot, adFormat = 'auto' }: AdBannerProps) {
     <div className="w-full overflow-hidden rounded-xl">
       <ins
         className="adsbygoogle block"
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"  // Publisher ID로 교체
+        data-ad-client="ca-pub-9703211255586228"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive="true"
