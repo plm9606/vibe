@@ -2,7 +2,11 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
+const fontUrl = 'https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf';
+
 export async function GET(request: Request) {
+  const fontData = await fetch(new URL(fontUrl)).then(res => res.arrayBuffer());
+
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get('symbol') ?? 'BTC';
   const cheaper = searchParams.get('cheaper') ?? 'binance';
@@ -11,7 +15,6 @@ export async function GET(request: Request) {
 
   const isBinance = cheaper === 'binance';
   const exchangeName = isBinance ? '바이낸스(해외거래소)' : '업비트';
-  const emoji = isBinance ? '🏦' : '🇰🇷';
   const premiumNum = parseFloat(premium);
 
   return new ImageResponse(
@@ -20,18 +23,18 @@ export async function GET(request: Request) {
         style={{
           width: '1200px',
           height: '630px',
-          background: '#030712',
+          background: 'linear-gradient(135deg, #030712 0%, #0f172a 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '64px',
-          fontFamily: 'sans-serif',
+          fontFamily: '"Spoqa Han Sans Neo"',
         }}
       >
         {/* 상단 레이블 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
           <div style={{ fontSize: '32px' }}>🔄</div>
-          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em' }}>
             거래소 가격 비교
           </div>
         </div>
@@ -59,7 +62,7 @@ export async function GET(request: Request) {
             fontWeight: 'bold',
             marginBottom: '16px',
           }}>
-            {emoji} {exchangeName}에서 사는게 더 싸요!
+            {isBinance ? '🏦' : '🇰🇷'} {exchangeName}에서 사는게 더 싸요!
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
@@ -104,6 +107,17 @@ export async function GET(request: Request) {
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: 'Spoqa Han Sans Neo',
+          data: fontData,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
+    }
   );
 }

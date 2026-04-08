@@ -2,7 +2,11 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
+const fontUrl = 'https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf';
+
 export async function GET(request: Request) {
+  const fontData = await fetch(new URL(fontUrl)).then(res => res.arrayBuffer());
+
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get('symbol') ?? 'STOCK';
   const name = searchParams.get('name') ?? symbol;
@@ -23,13 +27,13 @@ export async function GET(request: Request) {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '64px',
-          fontFamily: 'sans-serif',
+          fontFamily: '"Spoqa Han Sans Neo"',
         }}
       >
         {/* 상단 레이블 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
           <div style={{ fontSize: '32px' }}>📈</div>
-          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em' }}>
             미장 환율 계산기
           </div>
         </div>
@@ -53,7 +57,7 @@ export async function GET(request: Request) {
             padding: '32px 40px',
             marginTop: '24px',
           }}>
-            <div style={{ color: '#6ee7b7', fontSize: '20px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+            <div style={{ color: '#6ee7b7', fontSize: '20px', letterSpacing: '0.1em', marginBottom: '8px' }}>
               손익분기 결과
             </div>
             <div style={{ color: '#a7f3d0', fontSize: '48px', fontWeight: 'bold' }}>
@@ -73,7 +77,7 @@ export async function GET(request: Request) {
             padding: '32px 40px',
             marginTop: '24px',
           }}>
-            <div style={{ color: '#818cf8', fontSize: '20px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+            <div style={{ color: '#818cf8', fontSize: '20px', letterSpacing: '0.1em', marginBottom: '8px' }}>
               손익분기 결과
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
@@ -101,6 +105,17 @@ export async function GET(request: Request) {
         )}
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: 'Spoqa Han Sans Neo',
+          data: fontData,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
+    }
   );
 }
