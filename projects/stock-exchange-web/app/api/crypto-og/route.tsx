@@ -2,7 +2,11 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
+const fontUrl = 'https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf';
+
 export async function GET(request: Request) {
+  const fontData = await fetch(new URL(fontUrl)).then(res => res.arrayBuffer());
+
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get('symbol') ?? 'BTC';
   const cheaper = searchParams.get('cheaper') ?? 'binance';
@@ -24,7 +28,7 @@ export async function GET(request: Request) {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '64px',
-          fontFamily: 'sans-serif',
+          fontFamily: '"Spoqa Han Sans Neo"',
         }}
       >
         {/* 상단 레이블 */}
@@ -103,6 +107,17 @@ export async function GET(request: Request) {
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: 'Spoqa Han Sans Neo',
+          data: fontData,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
+    }
   );
 }
