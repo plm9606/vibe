@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import AdBanner from '@/components/AdBanner';
 import TabNav from '@/components/TabNav';
 
 interface CryptoResult {
@@ -31,6 +33,18 @@ export default function CryptoCompare() {
   const [coinName, setCoinName] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showSearch, setShowSearch] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // URL에 symbol 파라미터가 있으면 자동 비교
+  useEffect(() => {
+    const sym = searchParams.get('symbol');
+    if (!sym) return;
+    handleCompare(sym);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSearch(query: string) {
     setSymbol(query.toUpperCase());
@@ -71,6 +85,29 @@ export default function CryptoCompare() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleShare() {
+    if (!result) return;
+    const url = `${window.location.origin}/crypto?symbol=${result.symbol}`;
+    const cheaperExchange = result.cheaper === 'binance' ? '바이낸스(해외거래소)' : '업비트';
+    const displayName = coinName || result.symbol;
+    const shareText = `${displayName} 코인, 지금은 ${cheaperExchange}에서 사는게 더 싸대요\n김치프리미엄: ${result.kimchiPremium > 0 ? '+' : ''}${fmt(result.kimchiPremium, 2)}%\n\n${url}`;
+
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = shareText;
+      el.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    router.replace(`/crypto?symbol=${result.symbol}`, { scroll: false });
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   const isBinanceCheaper = result?.cheaper === 'binance';
@@ -168,6 +205,45 @@ export default function CryptoCompare() {
         {/* 결과 */}
         {result && !loading && (
           <div className="space-y-3">
+
+            {/* 공유 섹션 */}
+            <div className="relative rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 via-blue-600/20 to-cyan-600/20" />
+              <div className="absolute inset-0 border border-white/10 rounded-2xl" />
+              <div className="relative p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-semibold text-white/50 uppercase tracking-widest">결과 공유하기</span>
+                  <div className="flex-1 h-px bg-white/10" />
+                </div>
+                <p className="text-white/50 text-xs mb-3 leading-relaxed">
+                  링크를 열면 자동으로 같은 코인이 비교됩니다.
+                </p>
+                <button
+                  onClick={handleShare}
+                  className={`w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+                    copied
+                      ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
+                      : 'bg-white/10 hover:bg-white/15 active:scale-[0.98] border border-white/15 text-white'
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      링크 복사됨!
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                      </svg>
+                      {result.symbol} 비교 결과 공유
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
 
             {/* 메인 결과 카드 */}
             <div className={`bg-gradient-to-br ${
@@ -337,6 +413,11 @@ export default function CryptoCompare() {
             </div>
           </div>
         </section>
+
+        {/* 광고 */}
+        <div className="mt-6">
+          <AdBanner adSlot="AUTO" adFormat="horizontal" />
+        </div>
 
         <p className="text-center text-gray-600 text-xs mt-8 leading-relaxed">
           시세: {result?.binance.source ?? 'Binance'} · Upbit (실시간)
