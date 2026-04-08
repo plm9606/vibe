@@ -90,7 +90,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-lg font-bold text-white mb-3">9. 문의</h2>
-            <p>본 약관에 대한 문의사항이 있으시면 <a href="mailto:mijang.calculator@gmail.com" className="text-blue-400 underline">mijang.calculator@gmail.com</a>으로 연락해 주세요.</p>
+            <p>본 약관에 대한 문의사항이 있으시면 <a href="mailto:vitmdgus12@gmail.com" className="text-blue-400 underline">vitmdgus12@gmail.com</a>으로 연락해 주세요.</p>
           </section>
 
         </div>

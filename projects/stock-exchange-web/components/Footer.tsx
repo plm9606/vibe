@@ -16,7 +16,7 @@ export default function Footer() {
           <span>·</span>
           <Link href="/terms" className="hover:text-gray-400 transition-colors">이용약관</Link>
           <span>·</span>
-          <a href="mailto:mijang.calculator@gmail.com" className="hover:text-gray-400 transition-colors">문의</a>
+          <a href="mailto:vitmdgus12@gmail.com" className="hover:text-gray-400 transition-colors">문의</a>
         </div>
         <p className="text-center text-gray-700 text-xs mt-4">
           &copy; {new Date().getFullYear()} 미장 환율 계산기. 투자 참고용이며 투자 조언이 아닙니다.

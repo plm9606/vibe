@@ -95,11 +95,11 @@ export default function AboutPage() {
           <section>
             <h2 className="text-xl font-bold text-white mb-3">문의</h2>
             <p className="text-sm">서비스 관련 문의, 버그 신고, 기능 제안은 아래 이메일로 연락해 주세요.</p>
-            <a href="mailto:mijang.calculator@gmail.com" className="inline-flex items-center gap-2 mt-3 text-blue-400 hover:text-blue-300 text-sm transition-colors">
+            <a href="mailto:vitmdgus12@gmail.com" className="inline-flex items-center gap-2 mt-3 text-blue-400 hover:text-blue-300 text-sm transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              mijang.calculator@gmail.com
+              vitmdgus12@gmail.com
             </a>
           </section>
 
