@@ -11,7 +11,6 @@ export async function GET(request: Request) {
 
   const isBinance = cheaper === 'binance';
   const exchangeName = isBinance ? '바이낸스(해외거래소)' : '업비트';
-  const emoji = isBinance ? '🏦' : '🇰🇷';
   const premiumNum = parseFloat(premium);
 
   return new ImageResponse(
@@ -20,7 +19,7 @@ export async function GET(request: Request) {
         style={{
           width: '1200px',
           height: '630px',
-          background: '#030712',
+          background: 'linear-gradient(135deg, #030712 0%, #0f172a 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -31,7 +30,7 @@ export async function GET(request: Request) {
         {/* 상단 레이블 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
           <div style={{ fontSize: '32px' }}>🔄</div>
-          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <div style={{ color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em' }}>
             거래소 가격 비교
           </div>
         </div>
@@ -59,7 +58,7 @@ export async function GET(request: Request) {
             fontWeight: 'bold',
             marginBottom: '16px',
           }}>
-            {emoji} {exchangeName}에서 사는게 더 싸요!
+            {isBinance ? '🏦' : '🇰🇷'} {exchangeName}에서 사는게 더 싸요!
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
