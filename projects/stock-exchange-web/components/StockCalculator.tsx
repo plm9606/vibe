@@ -2,6 +2,7 @@
 
 import { AnalysisResult, analyze } from '@/lib/calculator';
 import AdBanner from '@/components/AdBanner';
+import TabNav from '@/components/TabNav';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -167,11 +168,12 @@ export default function StockCalculator() {
     <main className="min-h-screen bg-gray-950 text-white flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-md">
 
+        {/* 탭 네비게이션 */}
+        <TabNav />
+
         {/* 헤더 */}
-        <div className="text-center mb-8">
-          <div className="text-4xl mb-2">📈</div>
-          <h1 className="text-2xl font-bold tracking-tight">실시간 미장 환율 계산기</h1>
-          <p className="text-gray-400 text-sm mt-1">지금 환율에 얼마나 더 빠져야 이득일까?</p>
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-bold tracking-tight">지금 환율에 얼마나 더 빠져야 이득일까?</h1>
         </div>
 
         {/* 입력 */}
