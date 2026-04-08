@@ -8,7 +8,6 @@ const OG_IMAGES = [
   '/og_stock_3.png',
   '/og_stock_4.png',
   '/og_stock_5.png',
-  '/og_stock_6.png',
 ];
 
 function getOgImage(v: string | null): string {
