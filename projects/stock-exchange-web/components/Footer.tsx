@@ -6,6 +6,7 @@ export default function Footer() {
       <div className="max-w-2xl mx-auto px-5 py-8">
         <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400">
           <Link href="/" className="hover:text-white transition-colors">홈</Link>
+          <Link href="/crypto" className="hover:text-white transition-colors">거래소 비교</Link>
           <Link href="/guide" className="hover:text-white transition-colors">투자 가이드</Link>
           <Link href="/glossary" className="hover:text-white transition-colors">투자 용어 사전</Link>
           <Link href="/faq" className="hover:text-white transition-colors">자주 묻는 질문</Link>
