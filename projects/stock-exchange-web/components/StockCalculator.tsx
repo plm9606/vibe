@@ -60,7 +60,8 @@ export default function StockCalculator() {
 
   async function handleShare() {
     if (!stock || !result || !exchange) return;
-    const url = `${window.location.origin}?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`;
+    const v = Math.floor(Math.random() * 6);
+    const url = `${window.location.origin}?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}&v=${v}`;
     const fxStr = Math.round(exchange.current).toLocaleString('ko-KR');
     const shareText = result.isAlreadyGood
       ? `현재 환율: ${fxStr}원\n${stock.symbol} 지금 사도 유리해요! ✅\n\n${url}`
@@ -77,7 +78,7 @@ export default function StockCalculator() {
       document.execCommand('copy');
       document.body.removeChild(el);
     }
-    router.replace(`?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}`, { scroll: false });
+    router.replace(`?symbol=${stock.symbol}&fxMonths=${fxMonths}&stockMonths=${stockMonths}&v=${v}`, { scroll: false });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
