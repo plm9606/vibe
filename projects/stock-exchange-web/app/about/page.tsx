@@ -94,7 +94,13 @@ export default function AboutPage() {
 
           <section>
             <h2 className="text-xl font-bold text-white mb-3">문의</h2>
-            <p className="text-sm">서비스 관련 문의는 아래 링크를 통해 연락해 주세요.</p>
+            <p className="text-sm">서비스 관련 문의, 버그 신고, 기능 제안은 아래 이메일로 연락해 주세요.</p>
+            <a href="mailto:vitmdgus12@gmail.com" className="inline-flex items-center gap-2 mt-3 text-blue-400 hover:text-blue-300 text-sm transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              vitmdgus12@gmail.com
+            </a>
           </section>
 
         </div>
@@ -104,18 +110,9 @@ export default function AboutPage() {
           <AdBanner adSlot="AUTO" adFormat="auto" />
         </div>
 
-        <div className="mt-12 flex gap-3 flex-wrap">
-          <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
-            계산기 사용하기
-          </Link>
-          <Link href="/guide" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
-            투자 가이드 읽기
-          </Link>
-          <Link href="/faq" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
-            자주 묻는 질문
-          </Link>
-          <Link href="/privacy" className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">
-            개인정보처리방침
+        <div className="mt-12 text-center">
+          <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-bold text-sm transition-colors">
+            계산기 사용하기 →
           </Link>
         </div>
 

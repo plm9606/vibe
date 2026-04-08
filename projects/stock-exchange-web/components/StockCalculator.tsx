@@ -600,21 +600,8 @@ export default function StockCalculator() {
         </div>
 
         <p className="text-center text-gray-600 text-xs mt-8 leading-relaxed">
-          환율: Frankfurter (ECB) · 주가: Yahoo Finance<br />
-          투자 판단의 참고용이며 실제 투자 조언이 아닙니다
+          환율: Frankfurter (ECB) · 주가: Yahoo Finance
         </p>
-        <nav className="flex flex-col items-center gap-2 mt-4 text-xs text-gray-700">
-          <div className="flex gap-4">
-            <a href="/guide" className="hover:text-gray-400 transition-colors whitespace-nowrap">투자 가이드</a>
-            <span>·</span>
-            <a href="/faq" className="hover:text-gray-400 transition-colors whitespace-nowrap">자주 묻는 질문</a>
-          </div>
-          <div className="flex gap-4">
-            <a href="/about" className="hover:text-gray-400 transition-colors whitespace-nowrap">서비스 소개</a>
-            <span>·</span>
-            <a href="/privacy" className="hover:text-gray-400 transition-colors whitespace-nowrap">개인정보처리방침</a>
-          </div>
-        </nav>
       </div>
     </main>
   );
