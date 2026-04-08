@@ -2,6 +2,20 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import StockCalculator from '@/components/StockCalculator';
 
+const OG_IMAGES = [
+  '/og_stock_1.png',
+  '/og_stock_2.png',
+  '/og_stock_3.png',
+  '/og_stock_4.png',
+  '/og_stock_5.png',
+  '/og_stock_6.png',
+];
+
+function getOgImage(v: string | null): string {
+  const index = v !== null ? parseInt(v, 10) % OG_IMAGES.length : Math.floor(Math.random() * OG_IMAGES.length);
+  return OG_IMAGES[isNaN(index) ? 0 : index];
+}
+
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
@@ -15,6 +29,9 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const good = params.good === 'true';
   const drop = typeof params.drop === 'string' ? params.drop : null;
   const fx = typeof params.fx === 'string' ? params.fx : null;
+  const v = typeof params.v === 'string' ? params.v : null;
+
+  const ogImage = getOgImage(v);
 
   if (!symbol || !price || !breakeven) {
     return {
@@ -23,13 +40,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       openGraph: {
         title: '미장 환율 계산기',
         description: '지금 사면 손해일까? 환율 고려해서 계산해보기',
-        images: [{ url: '/og_default.png', width: 1200, height: 630 }],
+        images: [{ url: ogImage, width: 1200, height: 630 }],
       },
       twitter: {
         card: 'summary_large_image',
         title: '미장 환율 계산기',
         description: '지금 사면 손해일까? 환율 고려해서 계산해보기',
-        images: ['/og_default.png'],
+        images: [ogImage],
       },
     };
   }
@@ -48,13 +65,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     openGraph: {
       title,
       description,
-      images: [{ url: '/og_default.png', width: 1200, height: 630 }],
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ['/og_default.png'],
+      images: [ogImage],
     },
   };
 }

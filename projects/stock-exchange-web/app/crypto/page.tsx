@@ -2,6 +2,18 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import CryptoCompare from '@/components/CryptoCompare';
 
+const OG_IMAGES = [
+  '/og_crypto_1.png',
+  '/og_crypto_2.png',
+  '/og_crypto_3.png',
+  '/og_crypto_4.png',
+];
+
+function getRotatingOgImage(): string {
+  const hourIndex = Math.floor(Date.now() / (1000 * 60 * 60)) % OG_IMAGES.length;
+  return OG_IMAGES[hourIndex];
+}
+
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
@@ -13,6 +25,8 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const premium = typeof params.premium === 'string' ? params.premium : null;
   const savings = typeof params.savings === 'string' ? params.savings : null;
 
+  const ogImage = getRotatingOgImage();
+
   if (!symbol || !cheaper) {
     return {
       title: '거래소 가격 비교 - 바이낸스 vs 업비트',
@@ -21,13 +35,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       openGraph: {
         title: '거래소 가격 비교 - 바이낸스 vs 업비트',
         description: '다른 코인도 비교해보기',
-        images: [{ url: '/og_default.png', width: 1200, height: 630 }],
+        images: [{ url: ogImage, width: 1200, height: 630 }],
       },
       twitter: {
         card: 'summary_large_image',
         title: '거래소 가격 비교 - 바이낸스 vs 업비트',
         description: '다른 코인도 비교해보기',
-        images: ['/og_default.png'],
+        images: [ogImage],
       },
     };
   }
@@ -36,9 +50,6 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const title = `${symbol} 코인, 지금은 ${exchangeName}에서 사는게 더 싸요!`;
   const description = '다른 코인도 비교해보기';
 
-  const ogParams = new URLSearchParams({ symbol, cheaper, premium: premium ?? '0', savings: savings ?? '0' });
-  const ogImageUrl = `/api/crypto-og?${ogParams.toString()}`;
-
   return {
     title,
     description,
@@ -46,13 +57,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     openGraph: {
       title,
       description,
-      images: [{ url: ogImageUrl, width: 1200, height: 630, type: 'image/png' }],
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImageUrl],
+      images: [ogImage],
     },
   };
 }
