@@ -89,7 +89,13 @@ export default function CryptoCompare() {
 
   async function handleShare() {
     if (!result) return;
-    const url = `${window.location.origin}/crypto?symbol=${result.symbol}`;
+    const params = new URLSearchParams({
+      symbol: result.symbol,
+      cheaper: result.cheaper,
+      premium: fmt(result.kimchiPremium, 2),
+      savings: Math.round(result.savings).toString(),
+    });
+    const url = `${window.location.origin}/crypto?${params.toString()}`;
     const cheaperExchange = result.cheaper === 'binance' ? '바이낸스(해외거래소)' : '업비트';
     const displayName = coinName || result.symbol;
     const shareText = `${displayName} 코인, 지금은 ${cheaperExchange}에서 사는게 더 싸대요\n김치프리미엄: ${result.kimchiPremium > 0 ? '+' : ''}${fmt(result.kimchiPremium, 2)}%\n\n${url}`;
@@ -105,7 +111,7 @@ export default function CryptoCompare() {
       document.execCommand('copy');
       document.body.removeChild(el);
     }
-    router.replace(`/crypto?symbol=${result.symbol}`, { scroll: false });
+    router.replace(`/crypto?${params.toString()}`, { scroll: false });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
