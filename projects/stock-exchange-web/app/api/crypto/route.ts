@@ -19,16 +19,33 @@ async function fetchUpbitPrice(symbol: string): Promise<{ krwPrice: number; usdt
   return { krwPrice: coin.trade_price, usdtKrw: usdt.trade_price };
 }
 
-// ── Binance API ──────────────────────────────────────────────────────
-async function fetchBinancePrice(symbol: string): Promise<number> {
-  const res = await axios.get('https://api.binance.com/api/v3/ticker/price', {
-    params: { symbol: `${symbol}USDT` },
-    timeout: 5000,
-  });
+// ── Binance API (+ CryptoCompare 폴백) ──────────────────────────────
+async function fetchGlobalUsdtPrice(symbol: string): Promise<{ price: number; source: string }> {
+  // 1차: Binance API
+  try {
+    const res = await axios.get('https://api.binance.com/api/v3/ticker/price', {
+      params: { symbol: `${symbol}USDT` },
+      timeout: 5000,
+    });
+    const price = parseFloat(res.data.price);
+    if (price && !isNaN(price)) return { price, source: 'Binance' };
+  } catch {
+    // Binance 실패 (451 지역 차단 등) → 폴백
+  }
 
-  const price = parseFloat(res.data.price);
-  if (!price || isNaN(price)) throw new Error(`바이낸스에서 ${symbol}USDT 마켓을 찾을 수 없습니다`);
-  return price;
+  // 2차: CryptoCompare API (지역 제한 없음)
+  try {
+    const res = await axios.get('https://min-api.cryptocompare.com/data/price', {
+      params: { fsym: symbol, tsyms: 'USDT' },
+      timeout: 5000,
+    });
+    const price = res.data?.USDT;
+    if (price && !isNaN(price)) return { price, source: 'CryptoCompare' };
+  } catch {
+    // CryptoCompare도 실패
+  }
+
+  throw new Error(`${symbol}/USDT 글로벌 시세를 조회할 수 없습니다`);
 }
 
 // ── Upbit 마켓 목록에서 KRW 마켓 코인 검색 ──────────────────────────
@@ -72,13 +89,13 @@ export async function GET(request: Request) {
   if (!symbol) return NextResponse.json({ error: 'symbol required' }, { status: 400 });
 
   try {
-    const [upbit, binanceUsdt] = await Promise.all([
+    const [upbit, global] = await Promise.all([
       fetchUpbitPrice(symbol),
-      fetchBinancePrice(symbol),
+      fetchGlobalUsdtPrice(symbol),
     ]);
 
-    // 경로 A: 원화 → USDT(업비트) → 바이낸스에서 코인 매수
-    const binanceKrwCost = binanceUsdt * upbit.usdtKrw;
+    // 경로 A: 원화 → USDT(업비트) → 해외 거래소에서 코인 매수
+    const binanceKrwCost = global.price * upbit.usdtKrw;
 
     // 경로 B: 업비트에서 원화로 직접 매수
     const upbitKrwCost = upbit.krwPrice;
@@ -96,9 +113,10 @@ export async function GET(request: Request) {
         krwPrice: upbitKrwCost,
       },
       binance: {
-        usdtPrice: binanceUsdt,
+        usdtPrice: global.price,
         usdtKrw: upbit.usdtKrw,
         krwPrice: binanceKrwCost,
+        source: global.source,
       },
       kimchiPremium,
       cheaper,

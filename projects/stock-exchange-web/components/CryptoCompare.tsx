@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import TabNav from '@/components/TabNav';
 
 interface CryptoResult {
   symbol: string;
   upbit: { krwPrice: number };
-  binance: { usdtPrice: number; usdtKrw: number; krwPrice: number };
+  binance: { usdtPrice: number; usdtKrw: number; krwPrice: number; source?: string };
   kimchiPremium: number;
   cheaper: 'binance' | 'upbit';
   savings: number;
@@ -78,11 +79,12 @@ export default function CryptoCompare() {
     <main className="min-h-screen bg-gray-950 text-white flex flex-col items-center px-4 py-8">
       <div className="w-full max-w-md">
 
+        {/* 탭 네비게이션 */}
+        <TabNav />
+
         {/* 헤더 */}
-        <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🔄</div>
-          <h1 className="text-2xl font-bold tracking-tight">거래소 가격 비교</h1>
-          <p className="text-gray-400 text-sm mt-1">바이낸스 vs 업비트, 어디서 사는 게 이득일까?</p>
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-bold tracking-tight">바이낸스 vs 업비트, 어디서 사는 게 이득일까?</h1>
         </div>
 
         {/* 입력 */}
@@ -224,7 +226,7 @@ export default function CryptoCompare() {
                   : 'bg-gray-800'
               }`}>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-sm font-bold">🏦 바이낸스 경유</span>
+                  <span className="text-sm font-bold">🏦 해외 거래소 경유</span>
                   {isBinanceCheaper && (
                     <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
                       저렴
@@ -337,7 +339,7 @@ export default function CryptoCompare() {
         </section>
 
         <p className="text-center text-gray-600 text-xs mt-8 leading-relaxed">
-          시세: Binance · Upbit (실시간)
+          시세: {result?.binance.source ?? 'Binance'} · Upbit (실시간)
         </p>
       </div>
     </main>
